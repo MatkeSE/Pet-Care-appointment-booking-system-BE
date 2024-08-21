@@ -33,20 +33,20 @@ public class VerterinarianController {
 
     }
 
-//    @GetMapping(UrlMapping.SEARCH_VETERINARIAN_FOR_APPOINTMENT)
-//    public ResponseEntity<ApiResponse> searchVeterinariansForAppointment(
-//            @RequestParam(required = false) LocalDate date,
-//            @RequestParam(required = false) LocalTime time,
-//            @RequestParam String specialization){
-//
-//        try {
-//            List<UserDto> availableVeterinarians = veterinarianService.findAvailableVetsForAppointment(specialization, date, time);
-//            if(availableVeterinarians.isEmpty()){
-//                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(FeedBackMessage.NO_VETS_AVAILABLE, null));
-//            }
-//            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND,availableVeterinarians));
-//        } catch (ResourceNotFoundException e) {
-//            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-//        }
-//    }
+    @GetMapping(UrlMapping.SEARCH_VETERINARIAN_FOR_APPOINTMENT)
+    public ResponseEntity<ApiResponse> searchVeterinariansForAppointment(
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) LocalTime time,
+            @RequestParam String specialization){
+
+        try {
+            List<UserDto> availableVeterinarians = veterinarianService.findAvailableVetsForAppointment(specialization, date, time);
+            if(availableVeterinarians.isEmpty()){
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(FeedBackMessage.NO_VETS_AVAILABLE, null));
+            }
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND,availableVeterinarians));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 }

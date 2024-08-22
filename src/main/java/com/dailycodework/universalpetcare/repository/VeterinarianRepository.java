@@ -7,7 +7,6 @@ import java.util.List;
 
 
 public interface VeterinarianRepository extends JpaRepository<Veterinarian, Long> {
-
     List<Veterinarian> findBySpecialization(String specialization);
 
     boolean existsBySpecialization(String specialization);

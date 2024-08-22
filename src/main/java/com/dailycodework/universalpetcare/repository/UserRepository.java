@@ -23,7 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                    @Param("gender") String gender,
                    @Param("phoneNumber") String phoneNumber);
 
-
     List<Veterinarian> findAllByUserType(String vet);
 }
 

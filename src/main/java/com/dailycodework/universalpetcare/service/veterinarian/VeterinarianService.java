@@ -34,11 +34,11 @@ public class VeterinarianService implements IVeterinarianService  {
 
     @Override
     public List<UserDto> getAllVeterinariansWithDetails(){
-        List<Veterinarian> veterinarians = userRepository.findAllByUserType("VET");
-        return veterinarians.stream()
-                .map(this ::mapVeterinarianToUserDto)
-                .toList();
-    }
+           List<Veterinarian> veterinarians = userRepository.findAllByUserType("VET");
+           return veterinarians.stream()
+                   .map(this ::mapVeterinarianToUserDto)
+                   .toList();
+       }
 
     @Override
     public List<UserDto> findAvailableVetsForAppointment(String specialization, LocalDate date, LocalTime time){
@@ -85,15 +85,15 @@ public class VeterinarianService implements IVeterinarianService  {
 
     }
 
-    private boolean isVetAvailable(Veterinarian veterinarian, LocalDate requestedDate, LocalTime requestedTime){
-        if(requestedDate != null && requestedTime != null){
-            LocalTime requestedEndTime = requestedTime.plusHours(2);
-            return appointmentRepository.findByVeterinarianAndAppointmentDate(veterinarian, requestedDate)
-                    .stream()
-                    .noneMatch(existingAppointment -> doesAppointmentOverLap(existingAppointment, requestedTime, requestedEndTime));
-        }
-        return true;
-    }
+      private boolean isVetAvailable(Veterinarian veterinarian, LocalDate requestedDate, LocalTime requestedTime){
+          if(requestedDate != null && requestedTime != null){
+              LocalTime requestedEndTime = requestedTime.plusHours(2);
+              return appointmentRepository.findByVeterinarianAndAppointmentDate(veterinarian, requestedDate)
+                      .stream()
+                      .noneMatch(existingAppointment -> doesAppointmentOverLap(existingAppointment, requestedTime, requestedEndTime));
+          }
+          return true;
+      }
 
     private boolean doesAppointmentOverLap(Appointment existingAppointment, LocalTime requestedStartTime, LocalTime requestedEndTime){
         LocalTime existingStartTime = existingAppointment.getAppointmentTime();

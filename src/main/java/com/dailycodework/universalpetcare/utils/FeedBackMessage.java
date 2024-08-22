@@ -16,4 +16,5 @@ public class FeedBackMessage {
     public static final String VET_OR_PATIENT_NOT_FOUND = "Veterinarian or Patient not found";
     public static final String NO_VETS_AVAILABLE = "No veterinarians available for the requested date and time";
 
+    ;
 }

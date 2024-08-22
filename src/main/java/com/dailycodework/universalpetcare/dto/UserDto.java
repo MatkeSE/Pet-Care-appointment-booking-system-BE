@@ -26,5 +26,4 @@ public class UserDto {
     private double averageRating;
     private Long totalReviewers;
 
-
 }

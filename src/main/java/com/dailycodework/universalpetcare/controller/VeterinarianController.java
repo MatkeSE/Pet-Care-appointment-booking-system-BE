@@ -3,8 +3,10 @@ package com.dailycodework.universalpetcare.controller;
 import com.dailycodework.universalpetcare.dto.UserDto;
 import com.dailycodework.universalpetcare.exception.ResourceNotFoundException;
 import com.dailycodework.universalpetcare.response.ApiResponse;
+import com.dailycodework.universalpetcare.service.appointment.AppointmentService;
 import com.dailycodework.universalpetcare.service.appointment.IAppointmentService;
 import com.dailycodework.universalpetcare.service.veterinarian.IVeterinarianService;
+import com.dailycodework.universalpetcare.service.veterinarian.VeterinarianService;
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import com.dailycodework.universalpetcare.utils.UrlMapping;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +19,11 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("http://localhost:5174")
 @RestController
 @RequestMapping(UrlMapping.VETERINARIANS)
 @RequiredArgsConstructor
-public class VerterinarianController {
-
+public class VeterinarianController {
     private final IVeterinarianService veterinarianService;
     private final IAppointmentService appointmentService;
 
@@ -46,7 +47,8 @@ public class VerterinarianController {
             }
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND,availableVeterinarians));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+           return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
+
 }

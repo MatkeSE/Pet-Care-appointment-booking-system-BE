@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.*;
 
+@CrossOrigin("http://localhost:5174")
 @RequiredArgsConstructor
 @RequestMapping(UrlMapping.REVIEWS)
 @RestController
@@ -26,14 +27,15 @@ public class ReviewController {
 
 
     @PostMapping(UrlMapping.SUBMIT_REVIEW)
-    public ResponseEntity<ApiResponse> saveReview(@RequestBody Review review,
-                                                 @RequestParam Long reviewerId,
-                                                 @RequestParam Long vetId) {
+    public ResponseEntity<ApiResponse> saveReview(
+            @RequestParam Long reviewerId,
+            @RequestParam Long vetId,
+            @RequestBody Review review) {
         try {
-          Review savedReview =  reviewService.saveReview(review, reviewerId, vetId);
+            Review savedReview =  reviewService.saveReview(review, reviewerId, vetId);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, savedReview.getId()));
         } catch (IllegalArgumentException | IllegalStateException e) {
-           return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
         }catch (AlreadyExistsException e){
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(), null));
         }catch (ResourceNotFoundException e){
@@ -45,11 +47,11 @@ public class ReviewController {
     @PutMapping(UrlMapping.UPDATE_REVIEW)
     public ResponseEntity<ApiResponse> updateReview(@RequestBody ReviewUpdateRequest updateRequest,
                                                     @PathVariable Long reviewId){        try {
-            Review updatedReview = reviewService.updateReview(reviewId, updateRequest);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, updatedReview.getId()));
-        } catch (ResourceNotFoundException e) {
-           return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-        }
+        Review updatedReview = reviewService.updateReview(reviewId, updateRequest);
+        return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, updatedReview.getId()));
+    } catch (ResourceNotFoundException e) {
+        return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+    }
     }
 
     @DeleteMapping(UrlMapping.DELETE_REVIEW)
@@ -58,7 +60,7 @@ public class ReviewController {
             reviewService.deleteReview(reviewId);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.DELETE_SUCCESS, null));
         } catch (ResourceNotFoundException e) {
-          return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
 

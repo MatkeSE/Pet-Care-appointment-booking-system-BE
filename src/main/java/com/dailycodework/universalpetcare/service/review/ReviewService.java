@@ -35,14 +35,14 @@ public class ReviewService implements IReviewService {
             throw new IllegalArgumentException(FeedBackMessage.CANNOT_REVIEW);
         }
 
-        Optional<Review> existingReview = reviewRepository.findByVeterinarianIdAndPatientId(veterinarianId, reviewerId);
+      /*  Optional<Review> existingReview = reviewRepository.findByVeterinarianIdAndPatientId(veterinarianId, reviewerId);
         if (existingReview.isPresent()) {
             throw new AlreadyExistsException(FeedBackMessage.ALREADY_REVIEWED);
         }
         boolean hadCompletedAppointments = appointmentRepository.existsByVeterinarianIdAndPatientIdAndStatus(veterinarianId, reviewerId, AppointmentStatus.COMPLETED);
         if (!hadCompletedAppointments) {
             throw new IllegalStateException(FeedBackMessage.NOT_ALLOWED);
-        }
+        }*/
 
         User veterinarian = userRepository.findById(veterinarianId).orElseThrow(() -> new ResourceNotFoundException(FeedBackMessage.VET_OR_PATIENT_NOT_FOUND));
 
@@ -53,7 +53,7 @@ public class ReviewService implements IReviewService {
         return reviewRepository.save(review);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public double getAverageRatingForVet(Long veterinarianId) {
         List<Review> reviews = reviewRepository.findByVeterinarianId(veterinarianId);

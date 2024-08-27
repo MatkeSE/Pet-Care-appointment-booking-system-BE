@@ -8,6 +8,7 @@ import com.dailycodework.universalpetcare.exception.ResourceNotFoundException;
 import com.dailycodework.universalpetcare.factory.UserFactory;
 import com.dailycodework.universalpetcare.model.Review;
 import com.dailycodework.universalpetcare.model.User;
+import com.dailycodework.universalpetcare.repository.ReviewRepository;
 import com.dailycodework.universalpetcare.repository.UserRepository;
 import com.dailycodework.universalpetcare.repository.VeterinarianRepository;
 import com.dailycodework.universalpetcare.request.RegistrationRequest;
@@ -37,13 +38,14 @@ public class UserService implements IUserService {
     private final IPetService petService;
     private final PhotoService photoService;
     private final ReviewService reviewService;
+    private final ReviewRepository reviewRepository;
 
 
     @Override
     public User register(RegistrationRequest request) {
-      return userFactory.createUser(request);
+        return userFactory.createUser(request);
     }
-     @Override
+    @Override
     public User update(Long userId, UserUpdateRequest request) {
         User user = findById(userId);
         user.setFirstName(request.getFirstName());
@@ -78,8 +80,13 @@ public class UserService implements IUserService {
     public UserDto getUserWithDetails(Long userId) throws SQLException {
         //1. get the user
         User user = findById(userId);
+        System.out.println("================= The user is ========================= " + user);
         //2. convert the user to a userDto
         UserDto userDto = entityConverter.mapEntityToDto(user, UserDto.class);
+
+        userDto.setTotalReviewers(reviewRepository.countByVeterinarianId(userId));
+
+
         //3. get user appointments ( users ( patient and a vet))
         setUserAppointment(userDto);
         //.4 get users photo
@@ -105,10 +112,11 @@ public class UserService implements IUserService {
         List<ReviewDto> reviewDto = reviewPage.getContent()
                 .stream()
                 .map(this::mapReviewToDto).toList();
-         if(!reviewDto.isEmpty()) {
-             double averageRating = reviewService.getAverageRatingForVet(userId);
-         }
-         userDto.setReviews(reviewDto);
+        if(!reviewDto.isEmpty()) {
+            double averageRating = reviewService.getAverageRatingForVet(userId);
+            userDto.setAverageRating(averageRating);
+        }
+        userDto.setReviews(reviewDto);
     }
 
     private ReviewDto mapReviewToDto(Review review) {

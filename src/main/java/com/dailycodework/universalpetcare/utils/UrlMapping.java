@@ -4,19 +4,23 @@ public class UrlMapping {
     public static final String API = "/api/v1" ;
     public static final String USERS = API+"/users" ;
     public static final String REGISTER_USER = "/register";
-    public static final String UPDATE_USER = "/update/{userId}";
+    public static final String UPDATE_USER = "/user/{userId}/update";
     public static final String GET_USER_BY_ID = "/user/{userId}";
-    public static final String DELETE_USER_BY_ID ="/delete/{userId}";
+    public static final String DELETE_USER_BY_ID ="/user/{userId}/delete";
     public static final String GET_ALL_USERS = "/all-users";
 
     /*========================== Start Appointment API =================================*/
     public static final String APPOINTMENTS = API+"/appointments";
     public static final String ALL_APPOINTMENT = "/all" ;
     public static final String BOOK_APPOINTMENT = "/book-appointment" ;
-    public static final String GET_APPOINTMENT_BY_ID = "/appointment/{id}" ;
+    public static final String GET_APPOINTMENT_BY_ID = "/appointment/{id}/fetch/appointment" ;
     public static final String GET_APPOINTMENT_BY_NO = "/appointment/{appointmentNo}/appointment" ;
     public static final String DELETE_APPOINTMENT = "/appointment/{id}/delete" ;
     public static final String UPDATE_APPOINTMENT = "/appointment/{id}/update";
+    public static final String CANCEL_APPOINTMENT = "/appointment/{id}/cancel";
+    public static final String APPROVE_APPOINTMENT = "/appointment/{id}/approve";
+    public static final String DECLINE_APPOINTMENT = "/appointment/{id}/decline";
+
     /*========================= End Appointment API ================================*/
 
     /*============================ Start Pet API ===================================*/
@@ -35,7 +39,7 @@ public class UrlMapping {
     public static final String PHOTOS = API+"/photos" ;
     public static final String UPLOAD_PHOTO = "/photo/upload" ;
     public static final String UPDATE_PHOTO = "/photo/{photoId}/update"; ;
-    public static final String DELETE_PHOTO = "/photo/{photoId}/delete" ;
+    public static final String DELETE_PHOTO = "/photo/{photoId}/{userId}/delete" ;
     public static final String GET_PHOTO_BY_ID = "/photo/{photoId}/photo" ;
     /*============================ End Photo API ===================================*/
 
@@ -54,7 +58,6 @@ public class UrlMapping {
     public static final String SEARCH_VETERINARIAN_FOR_APPOINTMENT = "/search-veterinarian";
     public static final String GET_ALL_SPECIALIZATIONS = "vet/get-all-specialization" ;
     /*============================ End Veterinarian API ===================================*/
-
 
     /*============================ Start Change Password ===================================*/
     public static final String CHANGE_PASSWORD = "/user/{userId}/change-password" ;

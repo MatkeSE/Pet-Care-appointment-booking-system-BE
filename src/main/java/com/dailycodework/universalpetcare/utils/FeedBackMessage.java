@@ -15,6 +15,9 @@ public class FeedBackMessage {
     public static final String CANNOT_REVIEW = "Veterinarians can not review themselves";
     public static final String VET_OR_PATIENT_NOT_FOUND = "Veterinarian or Patient not found";
     public static final String NO_VETS_AVAILABLE = "No veterinarians available for the requested date and time";
-
-    ;
+    public static final String EMPTY_PASSWORD = "All fields are required" ;
+    public static final String INCORRECT_PASSWORD = "Incorrect password";
+    public static final String PASSWORD_MISMATCH = "Password confirmation mismatch";
+    public static final String APPOINTMENT_CANNOT_BE_CANCELLED = "Error cancelling appointment";
+    public static final String APPOINTMENT_ALREADY_APPROVED = "This appointment is already approved";
 }

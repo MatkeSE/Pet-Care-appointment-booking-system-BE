@@ -51,9 +51,9 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getAppointmentById(@PathVariable Long id) {
         try {
             Appointment appointment = appointmentService.getAppointmentById(id);
-            return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointment));
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointment));
         } catch (ResourceNotFoundException e) {
-           return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
@@ -82,11 +82,39 @@ public class AppointmentController {
             @PathVariable Long id,
             @RequestBody AppointmentUpdateRequest request) {
         try {
-           Appointment appointment = appointmentService.updateAppointment(id, request);
+            Appointment appointment = appointmentService.updateAppointment(id, request);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
         } catch (IllegalStateException e) {
-           return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+    @PutMapping(UrlMapping.CANCEL_APPOINTMENT)
+    public ResponseEntity<ApiResponse> cancelAppointment(@PathVariable Long id) {
+        try {
+            Appointment appointment = appointmentService.cancelAppointment(id);
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
+    @PutMapping(UrlMapping.APPROVE_APPOINTMENT)
+    public ResponseEntity<ApiResponse> approveAppointment(@PathVariable Long id) {
+        try {
+            Appointment appointment = appointmentService.approveAppointment(id);
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PutMapping(UrlMapping.DECLINE_APPOINTMENT)
+    public ResponseEntity<ApiResponse> declineAppointment(@PathVariable Long id) {
+        try {
+            Appointment appointment = appointmentService.declineAppointment(id);
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 }

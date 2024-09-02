@@ -111,4 +111,34 @@ public class AppointmentService implements IAppointmentService {
                 }).toList();
     }
 
+    @Override
+    public  Appointment cancelAppointment(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId)
+                .filter(appointment -> appointment.getStatus().equals(AppointmentStatus.WAITING_FOR_APPROVAL))
+                .map(appointment -> {appointment.setStatus(AppointmentStatus.CANCELLED);
+                    return appointmentRepository.saveAndFlush(appointment);
+                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.APPOINTMENT_CANNOT_BE_CANCELLED));
+
+    }
+
+    @Override
+    public  Appointment approveAppointment(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId)
+                .filter(appointment -> !appointment.getStatus().equals(AppointmentStatus.APPROVED))
+                .map(appointment -> {appointment.setStatus(AppointmentStatus.APPROVED);
+                    return appointmentRepository.saveAndFlush(appointment);
+                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.APPOINTMENT_ALREADY_APPROVED));
+
+    }
+
+
+    @Override
+    public  Appointment declineAppointment(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId)
+                .map(appointment -> {appointment.setStatus(AppointmentStatus.NOT_APPROVED);
+                    return appointmentRepository.saveAndFlush(appointment);
+                }).orElseThrow(() -> new ResourceNotFoundException(FeedBackMessage.RESOURCE_NOT_FOUND));
+
+    }
+
 }

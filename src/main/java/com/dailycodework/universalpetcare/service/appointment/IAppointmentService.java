@@ -16,7 +16,10 @@ public interface IAppointmentService {
     void deleteAppointment(Long id);
     Appointment getAppointmentById(Long id);
     Appointment getAppointmentByNo(String appointmentNo);
-
-
     List<AppointmentDto> getUserAppointments(Long userId);
+    Appointment cancelAppointment(Long appointmentId);
+
+    Appointment approveAppointment(Long appointmentId);
+
+    Appointment declineAppointment(Long appointmentId);
 }

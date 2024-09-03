@@ -6,6 +6,7 @@ import com.dailycodework.universalpetcare.request.AppointmentUpdateRequest;
 import com.dailycodework.universalpetcare.request.BookAppointmentRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IAppointmentService {
     Appointment createAppointment(BookAppointmentRequest appointment, Long sender, Long recipient);
@@ -22,4 +23,8 @@ public interface IAppointmentService {
     Appointment approveAppointment(Long appointmentId);
 
     Appointment declineAppointment(Long appointmentId);
+
+    long countAppointment();
+
+    List<Map<String, Object>> getAppointmentSummary();
 }

@@ -7,6 +7,7 @@ import com.dailycodework.universalpetcare.request.UserUpdateRequest;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface IUserService {
     User register(RegistrationRequest request);
@@ -21,4 +22,16 @@ public interface IUserService {
     List<UserDto> getAllUsers();
 
     UserDto getUserWithDetails(Long userId) throws SQLException;
+
+    long countVeterinarians();
+
+    long countPatients();
+
+    long countAllUsers();
+
+    Map<String, Map<String,Long>> aggregateUsersByMonthAndType();
+
+
+
+    Map<String, Map<String, Long>> aggregateUsersByEnabledStatusAndType();
 }

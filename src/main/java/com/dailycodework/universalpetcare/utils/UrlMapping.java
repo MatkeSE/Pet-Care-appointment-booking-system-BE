@@ -16,7 +16,7 @@ public class UrlMapping {
     public static final String AGGREGATE_USERS = "/aggregated-users" ;
 
 
-
+    
 
     /*========================== Start Appointment API =================================*/
     public static final String APPOINTMENTS = API+"/appointments";

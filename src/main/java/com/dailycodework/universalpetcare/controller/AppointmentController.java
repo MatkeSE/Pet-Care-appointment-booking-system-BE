@@ -1,5 +1,6 @@
 package com.dailycodework.universalpetcare.controller;
 
+import com.dailycodework.universalpetcare.exception.AlreadyExistsException;
 import com.dailycodework.universalpetcare.exception.ResourceNotFoundException;
 import com.dailycodework.universalpetcare.model.Appointment;
 import com.dailycodework.universalpetcare.request.AppointmentUpdateRequest;
@@ -8,6 +9,7 @@ import com.dailycodework.universalpetcare.response.ApiResponse;
 import com.dailycodework.universalpetcare.service.appointment.AppointmentService;
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import com.dailycodework.universalpetcare.utils.UrlMapping;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +56,7 @@ public class AppointmentController {
             Appointment appointment = appointmentService.getAppointmentById(id);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, appointment));
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+           return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
@@ -83,10 +85,10 @@ public class AppointmentController {
             @PathVariable Long id,
             @RequestBody AppointmentUpdateRequest request) {
         try {
-            Appointment appointment = appointmentService.updateAppointment(id, request);
+           Appointment appointment = appointmentService.updateAppointment(id, request);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+           return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
         }
     }
     @PutMapping(UrlMapping.CANCEL_APPOINTMENT)
@@ -95,11 +97,11 @@ public class AppointmentController {
             Appointment appointment = appointmentService.cancelAppointment(id);
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
         } catch (IllegalStateException e) {
-            return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
+           return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
         }
     }
 
-    @PutMapping(UrlMapping.APPROVE_APPOINTMENT)
+@PutMapping(UrlMapping.APPROVE_APPOINTMENT)
     public ResponseEntity<ApiResponse> approveAppointment(@PathVariable Long id) {
         try {
             Appointment appointment = appointmentService.approveAppointment(id);
@@ -118,6 +120,7 @@ public class AppointmentController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
+
     @GetMapping(UrlMapping.COUNT_APPOINTMENT)
     public long countAppointments() {
         return appointmentService.countAppointment();
@@ -132,4 +135,6 @@ public class AppointmentController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error retrieving appointment summary: " + e.getMessage(), null));
         }
     }
+
+    
 }

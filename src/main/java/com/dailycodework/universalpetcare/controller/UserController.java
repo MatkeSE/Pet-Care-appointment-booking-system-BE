@@ -56,11 +56,11 @@ public class UserController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-    @GetMapping(UrlMapping.GET_USER_BY_ID)
+     @GetMapping(UrlMapping.GET_USER_BY_ID)
     public ResponseEntity<ApiResponse> findById(@PathVariable Long userId) {
         try {
-            UserDto userDto = userService.getUserWithDetails(userId);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, userDto));
+               UserDto userDto = userService.getUserWithDetails(userId);
+               return ResponseEntity.ok(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, userDto));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }catch (Exception e) {
@@ -85,12 +85,13 @@ public class UserController {
         List<UserDto> theUsers = userService.getAllUsers();
         return ResponseEntity.status(FOUND).body(new ApiResponse(FeedBackMessage.RESOURCE_FOUND, theUsers));
     }
+
     @PutMapping(UrlMapping.CHANGE_PASSWORD)
     public ResponseEntity<ApiResponse> changePassword(@PathVariable Long userId,
                                                       @RequestBody ChangePasswordRequest request) {
         try {
-            changePasswordService.changePassword(userId, request);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, null));
+               changePasswordService.changePassword(userId, request);
+               return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, null));
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new ApiResponse(e.getMessage(), null));
         }catch (ResourceNotFoundException e) {
@@ -99,6 +100,7 @@ public class UserController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
+
     @GetMapping(UrlMapping.Count_All_VETS)
     public long countVeterinarians() {
         return userService.countVeterinarians();
@@ -132,28 +134,27 @@ public class UserController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-//
-//    @PutMapping("/account/{userId}/lock-user-account")
-//    public ResponseEntity<ApiResponse> lockUserAccount(@PathVariable Long userId) {
-//        try {
-//            userService.lockUserAccount(userId);
-//            return  ResponseEntity.ok(new ApiResponse("User account locked successfully", null));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-//        }
-//    }
-//
-//    @PutMapping("/account/{userId}/unLock-user-account")
-//    public ResponseEntity<ApiResponse> unLockUserAccount(@PathVariable Long userId) {
-//        try {
-//            userService.unLockUserAccount(userId);
-//            return  ResponseEntity.ok(new ApiResponse("User account unlocked successfully", null));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-//        }
-//    }
+
+    @PutMapping("/account/{userId}/lock-user-account")
+    public ResponseEntity<ApiResponse> lockUserAccount(@PathVariable Long userId) {
+        try {
+            userService.lockUserAccount(userId);
+            return  ResponseEntity.ok(new ApiResponse("User account locked successfully", null));
+        } catch (Exception e) {
+           return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PutMapping("/account/{userId}/unLock-user-account")
+    public ResponseEntity<ApiResponse> unLockUserAccount(@PathVariable Long userId) {
+        try {
+            userService.unLockUserAccount(userId);
+            return  ResponseEntity.ok(new ApiResponse("User account unlocked successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 
 }
-
 
 

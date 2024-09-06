@@ -34,4 +34,5 @@ public interface IUserService {
 
 
     Map<String, Map<String, Long>> aggregateUsersByEnabledStatusAndType();
+
 }

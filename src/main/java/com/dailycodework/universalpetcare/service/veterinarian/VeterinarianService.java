@@ -110,7 +110,6 @@ public class VeterinarianService implements IVeterinarianService  {
         return !requestedStartTime.isBefore(unavailableStartTime) && !requestedEndTime.isAfter(unavailableEndTime);
     }
 
-
     @Override
     public   List<Map<String, Object>> aggregateVetsBySpecialization(){
         List<Object[]> results = veterinarianRepository.countVetsBySpecialization();
@@ -118,5 +117,7 @@ public class VeterinarianService implements IVeterinarianService  {
                 .map(result -> Map.of("specialization", result[0], "count", result[1]))
                 .collect(Collectors.toList());
     }
+
+
 
 }

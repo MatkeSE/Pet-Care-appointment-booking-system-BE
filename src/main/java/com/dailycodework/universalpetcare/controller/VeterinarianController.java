@@ -10,6 +10,7 @@ import com.dailycodework.universalpetcare.service.veterinarian.VeterinarianServi
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import com.dailycodework.universalpetcare.utils.UrlMapping;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +39,9 @@ public class VeterinarianController {
 
     @GetMapping(UrlMapping.SEARCH_VETERINARIAN_FOR_APPOINTMENT)
     public ResponseEntity<ApiResponse> searchVeterinariansForAppointment(
-            @RequestParam(required = false) LocalDate date,
-            @RequestParam(required = false) LocalTime time,
+            @RequestParam( required = false) LocalDate date,
+            @RequestParam( required = false) LocalTime time,
             @RequestParam String specialization){
-
         try {
             List<UserDto> availableVeterinarians = veterinarianService.findAvailableVetsForAppointment(specialization, date, time);
             if(availableVeterinarians.isEmpty()){
@@ -52,7 +52,6 @@ public class VeterinarianController {
            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
     @GetMapping(UrlMapping.GET_ALL_SPECIALIZATIONS)
     public ResponseEntity<ApiResponse> getAllSpecializations() {
         try {

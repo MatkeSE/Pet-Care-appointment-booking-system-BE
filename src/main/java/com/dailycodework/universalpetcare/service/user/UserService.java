@@ -21,7 +21,6 @@ import com.dailycodework.universalpetcare.service.photo.PhotoService;
 import com.dailycodework.universalpetcare.service.review.ReviewService;
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +52,7 @@ public class UserService implements IUserService {
     public User register(RegistrationRequest request) {
         return userFactory.createUser(request);
     }
+
     @Override
     public User update(Long userId, UserUpdateRequest request) {
         User user = findById(userId);
@@ -73,17 +73,17 @@ public class UserService implements IUserService {
     @Override
     public void delete(Long userId) {
         userRepository.findById(userId)
-                .ifPresentOrElse(userToDelete ->{
+                .ifPresentOrElse(userToDelete -> {
                     List<Review> reviews = new ArrayList<>(reviewRepository.findAllByUserId(userId));
                     reviewRepository.deleteAll(reviews);
                     List<Appointment> appointments = new ArrayList<>(appointmentRepository.findAllByUserId(userId));
                     appointmentRepository.deleteAll(appointments);
                     userRepository.deleteById(userId);
 
-                }, () -> { throw new ResourceNotFoundException(FeedBackMessage.RESOURCE_NOT_FOUND);});
+                }, () -> {
+                    throw new ResourceNotFoundException(FeedBackMessage.RESOURCE_NOT_FOUND);
+                });
     }
-
-
 
 
     @Override
@@ -94,6 +94,7 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
 
     }
+
     @Override
     public UserDto getUserWithDetails(Long userId) throws SQLException {
         //1. get the user
@@ -110,13 +111,14 @@ public class UserService implements IUserService {
         //.4 get users photo
         setUserPhoto(userDto, user);
         setUserReviews(userDto, userId);
-        return  userDto;
+        return userDto;
     }
 
     private void setUserAppointment(UserDto userDto) {
         List<AppointmentDto> appointments = appointmentService.getUserAppointments(userDto.getId());
         userDto.setAppointments(appointments);
     }
+
     private void setUserPhoto(UserDto userDto, User user) throws SQLException {
         if (user.getPhoto() != null) {
             userDto.setPhotoId(user.getPhoto().getId());
@@ -130,7 +132,7 @@ public class UserService implements IUserService {
         List<ReviewDto> reviewDto = reviewPage.getContent()
                 .stream()
                 .map(this::mapReviewToDto).toList();
-        if(!reviewDto.isEmpty()) {
+        if (!reviewDto.isEmpty()) {
             double averageRating = reviewService.getAverageRatingForVet(userId);
             userDto.setAverageRating(averageRating);
         }
@@ -146,10 +148,11 @@ public class UserService implements IUserService {
         mapPatientInfo(reviewDto, review);
         return reviewDto;
     }
-    private void mapVeterinarianInfo(ReviewDto reviewDto, Review review){
+
+    private void mapVeterinarianInfo(ReviewDto reviewDto, Review review) {
         if (review.getVeterinarian() != null) {
             reviewDto.setVeterinarianId(review.getVeterinarian().getId());
-            reviewDto.setVeterinarianName(review.getVeterinarian().getFirstName()+ " " + review.getVeterinarian().getLastName());
+            reviewDto.setVeterinarianName(review.getVeterinarian().getFirstName() + " " + review.getVeterinarian().getLastName());
             // set the photo
             setVeterinarianPhoto(reviewDto, review);
         }
@@ -158,32 +161,32 @@ public class UserService implements IUserService {
     private void mapPatientInfo(ReviewDto reviewDto, Review review) {
         if (review.getPatient() != null) {
             reviewDto.setPatientId(review.getPatient().getId());
-            reviewDto.setPatientName(review.getPatient().getFirstName()+ " " + review.getPatient().getLastName());
+            reviewDto.setPatientName(review.getPatient().getFirstName() + " " + review.getPatient().getLastName());
             // set the photo
             setReviewerPhoto(reviewDto, review);
         }
     }
 
     private void setReviewerPhoto(ReviewDto reviewDto, Review review) {
-        if(review.getPatient().getPhoto() != null){
+        if (review.getPatient().getPhoto() != null) {
             try {
                 reviewDto.setPatientImage(photoService.getImageData(review.getPatient().getPhoto().getId()));
             } catch (SQLException e) {
                 throw new RuntimeException(e.getMessage());
             }
-        }else {
+        } else {
             reviewDto.setPatientImage(null);
         }
     }
 
     private void setVeterinarianPhoto(ReviewDto reviewDto, Review review) {
-        if(review.getVeterinarian().getPhoto() != null){
+        if (review.getVeterinarian().getPhoto() != null) {
             try {
                 reviewDto.setVeterinarianImage(photoService.getImageData(review.getVeterinarian().getPhoto().getId()));
             } catch (SQLException e) {
                 throw new RuntimeException(e.getMessage());
             }
-        }else {
+        } else {
             reviewDto.setVeterinarianImage(null);
         }
     }
@@ -207,7 +210,7 @@ public class UserService implements IUserService {
     public Map<String, Map<String,Long>> aggregateUsersByMonthAndType(){
         List<User> users = userRepository.findAll();
         return users.stream().collect(Collectors.groupingBy(user -> Month.of(user.getCreatedAt().getMonthValue())
-                        .getDisplayName(TextStyle.FULL, Locale.ENGLISH),
+                .getDisplayName(TextStyle.FULL, Locale.ENGLISH),
                 Collectors.groupingBy(User ::getUserType, Collectors.counting())));
     }
 
@@ -227,3 +230,5 @@ public class UserService implements IUserService {
         userRepository.updateUserEnabledStatus(userId, true);
     }
 }
+
+

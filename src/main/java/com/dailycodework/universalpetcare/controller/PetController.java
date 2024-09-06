@@ -27,10 +27,11 @@ public class PetController {
 
 
     @PostMapping(UrlMapping.SAVE_PETS_FOR_APPOINTMENT)
-    public ResponseEntity<ApiResponse> savePets(@RequestBody List<Pet> pets) {
+    public ResponseEntity<ApiResponse> savePets(@RequestParam Long appointmentId, @RequestBody List<Pet> pets) {
+        System.out.println("=====================From the backend controller======================== : "+ appointmentId+"  " + pets);
         try {
-            List<Pet> savedPets = petService.savePetsForAppointment(pets);
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, savedPets));
+            List<Pet> savedPets = petService.savePetsForAppointment(appointmentId, pets);
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.ADDED_SUCCESS, savedPets));
         } catch (RuntimeException e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }

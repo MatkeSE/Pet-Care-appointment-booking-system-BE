@@ -16,7 +16,6 @@ import com.dailycodework.universalpetcare.request.BookAppointmentRequest;
 import com.dailycodework.universalpetcare.service.pet.IPetService;
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,14 +108,13 @@ public class AppointmentService implements IAppointmentService {
                     return appointmentDto;
                 }).toList();
     }
-
     @Override
     public  Appointment cancelAppointment(Long appointmentId) {
         return appointmentRepository.findById(appointmentId)
                 .filter(appointment -> appointment.getStatus().equals(AppointmentStatus.WAITING_FOR_APPROVAL))
                 .map(appointment -> {appointment.setStatus(AppointmentStatus.CANCELLED);
                     return appointmentRepository.saveAndFlush(appointment);
-                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.APPOINTMENT_CANNOT_BE_CANCELLED));
+                    }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.APPOINTMENT_CANNOT_BE_CANCELLED));
 
     }
 
@@ -157,7 +155,7 @@ public class AppointmentService implements IAppointmentService {
                 .collect(Collectors.toList());
     }
 
-
+    
 
     private Map<String, Object> createStatusSummaryMap(AppointmentStatus status, Long value){
         Map<String, Object> summaryMap = new HashMap<>();
@@ -165,7 +163,7 @@ public class AppointmentService implements IAppointmentService {
         summaryMap.put("value", value);
         return summaryMap;
     }
-
+    
 
     private String formatAppointmentStatus(AppointmentStatus appointmentStatus) {
         return appointmentStatus.toString().replace("_", "-").toLowerCase();

@@ -1,6 +1,5 @@
 package com.dailycodework.universalpetcare.request;
 
-
 import lombok.Data;
 
 @Data

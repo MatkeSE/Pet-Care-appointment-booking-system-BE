@@ -1,5 +1,8 @@
 package com.dailycodework.universalpetcare.controller;
 
+import com.dailycodework.universalpetcare.event.AppointmentApprovedEvent;
+import com.dailycodework.universalpetcare.event.AppointmentBookedEvent;
+import com.dailycodework.universalpetcare.event.AppointmentDeclinedEvent;
 import com.dailycodework.universalpetcare.exception.AlreadyExistsException;
 import com.dailycodework.universalpetcare.exception.ResourceNotFoundException;
 import com.dailycodework.universalpetcare.model.Appointment;
@@ -11,6 +14,7 @@ import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import com.dailycodework.universalpetcare.utils.UrlMapping;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +29,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(UrlMapping.APPOINTMENTS)
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final ApplicationEventPublisher publisher;
 
     @GetMapping(UrlMapping.ALL_APPOINTMENT)
     public ResponseEntity<ApiResponse> getAllAppointments() {
@@ -43,6 +48,7 @@ public class AppointmentController {
             @RequestParam Long recipientId) {
         try {
             Appointment theAppointment = appointmentService.createAppointment(request, senderId, recipientId);
+            publisher.publishEvent(new AppointmentBookedEvent(theAppointment));
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, theAppointment));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
@@ -105,6 +111,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> approveAppointment(@PathVariable Long id) {
         try {
             Appointment appointment = appointmentService.approveAppointment(id);
+            publisher.publishEvent(new AppointmentApprovedEvent(appointment));
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
         } catch (IllegalStateException e) {
             return ResponseEntity.status(NOT_ACCEPTABLE).body(new ApiResponse(e.getMessage(), null));
@@ -115,6 +122,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> declineAppointment(@PathVariable Long id) {
         try {
             Appointment appointment = appointmentService.declineAppointment(id);
+            publisher.publishEvent(new AppointmentDeclinedEvent(appointment));
             return ResponseEntity.ok(new ApiResponse(FeedBackMessage.UPDATE_SUCCESS, appointment));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

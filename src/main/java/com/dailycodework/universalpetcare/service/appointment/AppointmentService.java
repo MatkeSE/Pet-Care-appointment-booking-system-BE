@@ -121,10 +121,10 @@ public class AppointmentService implements IAppointmentService {
     @Override
     public  Appointment approveAppointment(Long appointmentId) {
         return appointmentRepository.findById(appointmentId)
-                .filter(appointment -> !appointment.getStatus().equals(AppointmentStatus.APPROVED))
+                .filter(appointment -> appointment.getStatus().equals(AppointmentStatus.WAITING_FOR_APPROVAL))
                 .map(appointment -> {appointment.setStatus(AppointmentStatus.APPROVED);
                     return appointmentRepository.saveAndFlush(appointment);
-                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.APPOINTMENT_ALREADY_APPROVED));
+                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.OPERATION_NOT_ALLOWED));
 
     }
 
@@ -132,9 +132,10 @@ public class AppointmentService implements IAppointmentService {
     @Override
     public  Appointment declineAppointment(Long appointmentId) {
         return appointmentRepository.findById(appointmentId)
+                .filter(appointment -> appointment.getStatus().equals(AppointmentStatus.WAITING_FOR_APPROVAL))
                 .map(appointment -> {appointment.setStatus(AppointmentStatus.NOT_APPROVED);
                     return appointmentRepository.saveAndFlush(appointment);
-                }).orElseThrow(() -> new ResourceNotFoundException(FeedBackMessage.RESOURCE_NOT_FOUND));
+                }).orElseThrow(() -> new IllegalStateException(FeedBackMessage.OPERATION_NOT_ALLOWED));
 
     }
 

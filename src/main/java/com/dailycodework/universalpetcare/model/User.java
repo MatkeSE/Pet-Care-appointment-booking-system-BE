@@ -35,19 +35,18 @@ public class User {
     @Transient
     private String specialization;
     @Transient
-   private List<Appointment> appointments = new ArrayList<>();
-   @Transient
-   private List<Review> reviews = new ArrayList<>();
+    private List<Appointment> appointments = new ArrayList<>();
+    @Transient
+    private List<Review> reviews = new ArrayList<>();
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Photo photo;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
-                                                    CascadeType.PERSIST, CascadeType.REFRESH})
+            CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name ="user_roles",
             joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id")
-    )
-    private Collection<Role> roles = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName = "id"))
+    private  Collection<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<VerificationToken> verificationTokens = new ArrayList<>();

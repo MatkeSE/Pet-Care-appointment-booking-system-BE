@@ -1,12 +1,15 @@
 package com.dailycodework.universalpetcare.controller;
 
+import com.dailycodework.universalpetcare.event.RegistrationCompleteEvent;
 import com.dailycodework.universalpetcare.exception.ResourceNotFoundException;
 import com.dailycodework.universalpetcare.model.User;
+import com.dailycodework.universalpetcare.model.VerificationToken;
 import com.dailycodework.universalpetcare.request.LoginRequest;
 import com.dailycodework.universalpetcare.response.ApiResponse;
 import com.dailycodework.universalpetcare.response.JwtResponse;
 import com.dailycodework.universalpetcare.security.jwt.JwtUtils;
 import com.dailycodework.universalpetcare.security.user.UPCUserDetails;
+import com.dailycodework.universalpetcare.service.token.VerificationTokenService;
 import com.dailycodework.universalpetcare.utils.FeedBackMessage;
 import com.dailycodework.universalpetcare.utils.UrlMapping;
 import jakarta.validation.Valid;
@@ -27,13 +30,14 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
+@CrossOrigin("http://localhost:5174")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(UrlMapping.AUTH)
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-//    private final VerificationTokenService tokenService;
+    private final VerificationTokenService tokenService;
 //    private final PasswordResetService passwordResetService;
     private final ApplicationEventPublisher publisher;
 
@@ -58,22 +62,24 @@ public class AuthController {
 
         }
     }
-//
-//    @GetMapping(UrlMapping.VERIFY_EMAIL)
-//    public ResponseEntity<ApiResponse> verifyEmail(@RequestParam("token")    String token) {
-//        String result =   tokenService.validateToken(token);
-//        return  switch (result){
-//            case "VALID" -> ResponseEntity.ok(new ApiResponse(FeedBackMessage.VALID_VERIFICATION_TOKEN, null));
-//            case "VERIFIED" -> ResponseEntity.ok(new ApiResponse(FeedBackMessage.TOKEN_ALREADY_VERIFIED, null));
-//            case "EXPIRED" ->
-//                    ResponseEntity.status(HttpStatus.GONE).body(new ApiResponse(FeedBackMessage.EXPIRED_TOKEN, null));
-//            case "INVALID" ->
-//                    ResponseEntity.status(HttpStatus.GONE).body(new ApiResponse(FeedBackMessage.INVALID_VERIFICATION_TOKEN, null));
-//            default -> ResponseEntity.internalServerError().body(new ApiResponse(FeedBackMessage.ERROR, null));
-//
-//        } ;
-//    }
-//
+
+
+
+    @GetMapping(UrlMapping.VERIFY_EMAIL)
+    public ResponseEntity<ApiResponse> verifyEmail(@RequestParam("token")    String token) {
+        String result =   tokenService.validateToken(token);
+        return  switch (result){
+            case "VALID" -> ResponseEntity.ok(new ApiResponse(FeedBackMessage.VALID_VERIFICATION_TOKEN, null));
+            case "VERIFIED" -> ResponseEntity.ok(new ApiResponse(FeedBackMessage.TOKEN_ALREADY_VERIFIED, null));
+            case "EXPIRED" ->
+                    ResponseEntity.status(HttpStatus.GONE).body(new ApiResponse(FeedBackMessage.EXPIRED_TOKEN, null));
+            case "INVALID" ->
+                    ResponseEntity.status(HttpStatus.GONE).body(new ApiResponse(FeedBackMessage.INVALID_VERIFICATION_TOKEN, null));
+            default -> ResponseEntity.internalServerError().body(new ApiResponse(FeedBackMessage.ERROR, null));
+
+        } ;
+    }
+
 //
 //    @PutMapping(UrlMapping.RESEND_VERIFICATION_TOKEN)
 //    public ResponseEntity<ApiResponse> resendVerificationToken(@RequestParam("token") String oldToken) {

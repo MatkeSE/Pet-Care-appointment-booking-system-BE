@@ -27,8 +27,8 @@ public class FeedBackMessage {
 
 
     /*======================== Start Appointment API=====================================*/
-    public static final String APPOINTMENT_UPDATE_SUCCESS = "Appointment updated successfully";
-    public static final String ALREADY_APPROVED = "Appointment approved successfully";
+    public static final String ALREADY_APPROVED = "Appointment updated successfully";
+    public static final String APPOINTMENT_APPROVED_SUCCESS = "Appointment approved successfully";
     public static final String APPOINTMENT_DECLINED_SUCCESS = "Appointment declined successfully";
     public static final String APPOINTMENT_CANCELLED_SUCCESS = "Appointment cancelled successfully";
     public static final String APPOINTMENT_DELETE_SUCCESS = "Appointment deleted successfully";
@@ -36,7 +36,7 @@ public class FeedBackMessage {
     public static final String APPOINTMENT_FOUND = "Appointment found";
     public static final String APPOINTMENT_NOT_FOUND = "Appointment not found";
     public static final String APPOINTMENT_CANNOT_BE_CANCELLED = "Cannot update or cancel appointment";
-    public static final String APPOINTMENT_ALREADY_APPROVED = "Operation not allowed";
+    public static final String OPERATION_NOT_ALLOWED = "Operation not allowed";
     /*======================== End Appointment API=====================================*/
 
 

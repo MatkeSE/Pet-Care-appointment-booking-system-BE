@@ -22,13 +22,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class AuthTokenFilter  extends OncePerRequestFilter {
 
-//    @Autowired
+    @Autowired
     private JwtUtils jwtUtils;
-//    @Autowired
+    @Autowired
     UPCUserDetailsService userDetailsService;
 
     @Override

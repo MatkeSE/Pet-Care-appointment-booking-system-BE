@@ -94,8 +94,8 @@ public class UserController {
     public ResponseEntity<ApiResponse> changePassword(@PathVariable Long userId,
                                                       @RequestBody ChangePasswordRequest request) {
         try {
-               changePasswordService.changePassword(userId, request);
-               return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, null));
+            changePasswordService.changePassword(userId, request);
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.PASSWORD_CHANGE_SUCCESS, null));
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(new ApiResponse(e.getMessage(), null));
         }catch (ResourceNotFoundException e) {

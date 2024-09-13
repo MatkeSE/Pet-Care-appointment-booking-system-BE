@@ -49,7 +49,7 @@ public class AppointmentController {
         try {
             Appointment theAppointment = appointmentService.createAppointment(request, senderId, recipientId);
             publisher.publishEvent(new AppointmentBookedEvent(theAppointment));
-            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.CREATE_SUCCESS, theAppointment));
+            return ResponseEntity.ok(new ApiResponse(FeedBackMessage.APPOINTMENT_BOOKED_SUCCESS, theAppointment));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }catch (Exception e){

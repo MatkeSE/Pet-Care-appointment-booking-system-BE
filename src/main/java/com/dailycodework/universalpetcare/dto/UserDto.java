@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class UserDto {
@@ -24,6 +25,7 @@ public class UserDto {
     private long photoId;
     private byte[] photo;
     private double averageRating;
+    private Set<String> roles;
     private Long totalReviewers;
 
 }

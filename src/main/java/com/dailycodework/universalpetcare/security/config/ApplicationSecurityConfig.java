@@ -33,7 +33,7 @@ public class ApplicationSecurityConfig {
     private final JwtAuthEntryPoint authEntryPoint;
 
     private static final List<String> SECURED_URLS = List.of(
-//            "/api/v1/appointments/book-appointment",
+           "/api/v1/appointments/book-appointment",
             "/api/v1/reviews/**");
 
     @Bean
@@ -70,18 +70,18 @@ public class ApplicationSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(@NonNull CorsRegistry registry) {
-//                registry.addMapping("/**") // Apply to all endpoints
-//                        .allowedOrigins("http://localhost:5174") // Allow this origin
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these HTTP methods
-//                        .allowedHeaders("*") // Allow all headers
-//                        .allowCredentials(true); // Allow credentials
-//            }
-//        };
-//    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
+                registry.addMapping("/**") // Apply to all endpoints
+                        .allowedOrigins("http://localhost:5174") // Allow this origin
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow these HTTP methods
+                        .allowedHeaders("*") // Allow all headers
+                        .allowCredentials(true); // Allow credentials
+            }
+        };
+    }
 
 }

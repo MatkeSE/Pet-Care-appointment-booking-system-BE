@@ -32,7 +32,7 @@ import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-@CrossOrigin("http://localhost:5174")
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(UrlMapping.AUTH)

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:5174")
 @RestController
 @RequestMapping("/api/v1/roles")
 @RequiredArgsConstructor

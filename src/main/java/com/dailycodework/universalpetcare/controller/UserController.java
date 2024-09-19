@@ -24,7 +24,6 @@ import java.util.Map;
 
 import static org.springframework.http.HttpStatus.*;
 
-@CrossOrigin("http://localhost:5174")
 @RequiredArgsConstructor
 @RequestMapping(UrlMapping.USERS)
 @RestController
